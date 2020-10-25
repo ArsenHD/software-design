@@ -1,6 +1,7 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
 import ru.akirakozov.sd.refactoring.database.DatabaseUtils;
+import ru.akirakozov.sd.refactoring.html.HtmlResponseBuilder;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ public class AddProductServlet extends HttpServlet {
 
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println("OK");
+        HtmlResponseBuilder builder = HtmlResponseBuilder.builder(response.getWriter());
+        builder.println("OK");
     }
 }

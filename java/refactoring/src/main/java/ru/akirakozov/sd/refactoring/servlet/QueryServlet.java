@@ -1,6 +1,7 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
 import ru.akirakozov.sd.refactoring.database.DatabaseUtils;
+import ru.akirakozov.sd.refactoring.html.HtmlResponseBuilder;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,56 +23,65 @@ public class QueryServlet extends HttpServlet {
         if ("max".equals(command)) {
             DatabaseUtils.executeQueryWithResult(
                     "select * from product order by price desc limit 1", (resultSet) -> {
-                        response.getWriter().println("<html><body>");
-                        response.getWriter().println("<h1>Product with max price: </h1>");
+                        HtmlResponseBuilder builder = HtmlResponseBuilder.builder(response.getWriter());
+                        builder.htmlStart()
+                                .header(1, "Product with max price: ");
 
                         while (resultSet.next()) {
                             String  name = resultSet.getString("name");
                             int price  = resultSet.getInt("price");
-                            response.getWriter().println(name + "\t" + price + "</br>");
+                            builder.print(name + "\t" + price)
+                                    .br()
+                                    .newLine();
                         }
-                        response.getWriter().println("</body></html>");
+                        builder.htmlEnd();
                     });
         } else if ("min".equals(command)) {
             DatabaseUtils.executeQueryWithResult(
                     "select * from product order by price limit 1", (resultSet) -> {
-                        response.getWriter().println("<html><body>");
-                        response.getWriter().println("<h1>Product with min price: </h1>");
+                        HtmlResponseBuilder builder = HtmlResponseBuilder.builder(response.getWriter());
+                        builder.htmlStart()
+                                .header(1, "Product with min price: ");
 
                         while (resultSet.next()) {
                             String  name = resultSet.getString("name");
                             int price  = resultSet.getInt("price");
-                            response.getWriter().println(name + "\t" + price + "</br>");
+                            builder.print(name + "\t" + price)
+                                    .br()
+                                    .newLine();
                         }
-                        response.getWriter().println("</body></html>");
+                        builder.htmlEnd();
                     }
             );
         } else if ("sum".equals(command)) {
             DatabaseUtils.executeQueryWithResult(
                     "select sum(price) from product", (resultSet) -> {
-                        response.getWriter().println("<html><body>");
-                        response.getWriter().println("Summary price: ");
+                        HtmlResponseBuilder builder = HtmlResponseBuilder.builder(response.getWriter());
+                        builder.htmlStart()
+                                .println("Summary price: ");
 
                         if (resultSet.next()) {
-                            response.getWriter().println(resultSet.getInt(1));
+                            builder.println(String.valueOf(resultSet.getInt(1)));
                         }
-                        response.getWriter().println("</body></html>");
+                        builder.htmlEnd();
                     }
             );
         } else if ("count".equals(command)) {
             DatabaseUtils.executeQueryWithResult(
                     "select count(*) from product", (rs) -> {
-                        response.getWriter().println("<html><body>");
-                        response.getWriter().println("Number of products: ");
+                        HtmlResponseBuilder builder = HtmlResponseBuilder.builder(response.getWriter());
+                        builder.htmlStart()
+                                .println("Number of products: ");
 
                         if (rs.next()) {
-                            response.getWriter().println(rs.getInt(1));
+                            builder.println(String.valueOf(rs.getInt(1)));
                         }
-                        response.getWriter().println("</body></html>");
+                        builder.htmlEnd();
                     }
             );
         } else {
-            response.getWriter().println("Unknown command: " + command);
+            HtmlResponseBuilder builder = HtmlResponseBuilder.builder(response.getWriter());
+            builder.println("Unknown command: " + command);
         }
 
         response.setContentType("text/html");
