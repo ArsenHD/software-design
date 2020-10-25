@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ProductsAmountQuery extends Query {
     @Override
-    protected void doExecuteQuery(HttpServletResponse response) throws Exception {
+    protected void doExecuteQuery(HttpServletResponse response) {
         DatabaseUtils.executeQueryWithResult(
                 "select count(*) from product",
                 resultSet -> {

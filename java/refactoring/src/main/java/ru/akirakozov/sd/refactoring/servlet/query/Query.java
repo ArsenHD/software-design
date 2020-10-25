@@ -11,5 +11,5 @@ public abstract class Query {
         }
     }
 
-    protected abstract void doExecuteQuery(HttpServletResponse response) throws Exception;
+    protected abstract void doExecuteQuery(HttpServletResponse response);
 }

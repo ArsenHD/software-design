@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class AllProductsCostQuery extends Query {
     @Override
-    protected void doExecuteQuery(HttpServletResponse response) throws Exception {
+    protected void doExecuteQuery(HttpServletResponse response) {
         DatabaseUtils.executeQueryWithResult(
                 "select sum(price) from product",
                 resultSet -> {

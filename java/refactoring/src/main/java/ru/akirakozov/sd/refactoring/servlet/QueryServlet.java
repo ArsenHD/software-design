@@ -18,7 +18,7 @@ import java.sql.Statement;
  */
 public class QueryServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         String command = request.getParameter("command");
         Query query = obtainQuery(command);
         query.executeQuery(response);

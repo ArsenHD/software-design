@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MinPriceQuery extends Query {
     @Override
-    protected void doExecuteQuery(HttpServletResponse response) throws Exception {
+    protected void doExecuteQuery(HttpServletResponse response) {
         DatabaseUtils.executeQueryWithResult(
                 "select * from product order by price limit 1",
                 resultSet -> {

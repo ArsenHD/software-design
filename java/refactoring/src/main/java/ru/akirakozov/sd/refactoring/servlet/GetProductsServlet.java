@@ -18,7 +18,7 @@ import java.sql.Statement;
 public class GetProductsServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         DatabaseUtils.executeQueryWithResult(
                 "select * from product",
                 resultSet -> {
