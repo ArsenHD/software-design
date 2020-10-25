@@ -1,29 +1,19 @@
-package ru.akirakozov.sd.refactoring.servlet;
+package ru.akirakozov.sd.refactoring.servlet.query;
 
 import ru.akirakozov.sd.refactoring.database.DatabaseUtils;
 import ru.akirakozov.sd.refactoring.html.HtmlResponseBuilder;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
-/**
- * @author akirakozov
- */
-public class GetProductsServlet extends HttpServlet {
-
+public class MinPriceQuery extends Query {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doExecuteQuery(HttpServletResponse response) throws Exception {
         DatabaseUtils.executeQueryWithResult(
-                "select * from product",
+                "select * from product order by price limit 1",
                 resultSet -> {
                     HtmlResponseBuilder builder = HtmlResponseBuilder.builder(response.getWriter());
-                    builder.htmlStart();
+                    builder.htmlStart()
+                            .header(1, "Product with min price: ");
 
                     while (resultSet.next()) {
                         String  name = resultSet.getString("name");
@@ -33,9 +23,7 @@ public class GetProductsServlet extends HttpServlet {
                                 .newLine();
                     }
                     builder.htmlEnd();
-                });
-
-        response.setContentType("text/html");
-        response.setStatus(HttpServletResponse.SC_OK);
+                }
+        );
     }
 }
